@@ -13,6 +13,7 @@ services:
     image: postgres:13.10
     # Файл (или список файлов) с переменными окружения
     env_file: .env
+    restart: unless-stopped
     # Какой volume подключить для этого контейнера
     volumes:
       - pg_data:/var/lib/postgresql/data
@@ -21,6 +22,7 @@ services:
     # Из какого Dockerfile собирать образ для этого контейнера:
     build: ./backend/
     env_file: .env
+    restart: unless-stopped
     volumes:
       - static:/backend_static
     # Какие контейнеры нужно запустить до старта этого контейнера:
@@ -29,6 +31,7 @@ services:
   # Имя третьего контейнера. Это контейнер с фронтендом
   frontend:
     env_file: .env
+    restart: unless-stopped
     build: ./frontend/
     command: cp -r /app/build/. /frontend_static/
     volumes:
@@ -38,6 +41,7 @@ services:
     # Сбилдить и запустить образ, 
     # описанный в Dockerfile в папке gateway
     build: ./gateway/
+    restart: unless-stopped
     # Ключ ports устанавливает
     # перенаправление всех запросов с порта 8000 хоста
     # на порт 80 контейнера
